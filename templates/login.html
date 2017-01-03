@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block nav %}
+<div class="nav">
+    <nav class="navbar navbar-default .navbar-static-top container-fluid">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Wiki</a>
+            </div>
+            <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
+
+            <ul class="nav nav-tabs navbar-left">
+                <li role="tab"><a href="/">{{title}}</a></li>
+                <li role="tab"><a href="/{{title}}/archives">View Page History</a></li>
+                <li role="tab" class="active"><a href="/{{title}}/login_page">Edit This Page</a></li>
+                <li role="tab"><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+{% endblock %}
+{% block body %}
+<h1>Enter Username and Password</h1>
+<form action='/{{title}}/login' method="POST">
+    <input type="hidden" name="title" value="{{title}}">
+    <p>
+        <label>Username</label>
+        <input type="text" size="60" name="username" value="{{username}}" required>
+    </p>
+    <p>
+        <label>Password</label>
+        <input type="text" size="60" name="password" value="{{password}}" required>
+    </p>
+    <p>
+        <button type="submit">Submit</button>
+    </p>
+</form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Wiki</th>
+        <th>Author</th>
+        <th>Last Modified Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key, value in titlesDict.iteritems() %}
+    <tr>
+        <td><a href="/{{value[0]}}">{{value[0]}}</a></td>
+        <td>{{value[1]}}</td>
+        <td>{{value[2]}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

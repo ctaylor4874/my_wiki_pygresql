@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block nav %}
+<div class="nav">
+    <nav class="navbar navbar-default .navbar-static-top container-fluid">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Wiki</a>
+            </div>
+            <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
+
+            <ul class="nav nav-tabs navbar-left">
+                <li role="presentation"><a href="/{{title}}">{{title}}</a></li>
+                <li role="presentation" class="active"><a href="#">View Page History</a></li>
+                <li role="presentation"><a href="/{{title}}/login_page">Edit This Page</a></li>
+                <li role="tab"><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+{% endblock %}
+{% block body %}
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Wiki</th>
+            <th>Modified Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for titleArch, revisionid in title_list.iteritems() %}
+        <tr>
+            <td><a href="/{{title}}/archives/{{revisionid}}">{{title}}</a></td>
+            <td>{{titleArch}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

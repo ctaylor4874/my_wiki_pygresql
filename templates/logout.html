@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block nav %}
+<div class="nav">
+    <nav class="navbar navbar-default .navbar-static-top container-fluid">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Wiki</a>
+            </div>
+            <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
+
+            <ul class="nav nav-tabs navbar-left">
+                <li role="tab"><a href="/">{{title}}</a></li>
+                <li role="tab"><a href="/{{title}}/archives">View Page History</a></li>
+                <li role="tab"><a href="/{{title}}/login_page">Edit This Page</a></li>
+                <li role="tab" class="active"><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+{% endblock %}
+{% block body %}
+<h1>You are successfully logged out!</h1>
+<p>
+    <button type="button"><a href="/">Home</a></button>
+</p>
+{% endblock %}
