@@ -5,6 +5,9 @@ from page import *
 import markdown
 from flask import Markup
 from flask import Flask, session
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 app = Flask('mywiki')
 
@@ -29,7 +32,6 @@ def placeholder(page_name):
     page = Page()
     page.title = page_name
     exists = page.placeHolder()
-
     if exists:
         page.page_content = Markup(markdown.markdown(page.page_content))
         return view.render(
@@ -69,8 +71,8 @@ def login_page(page_name):
 def login(page_name):
     page = Page()
     page.title = page_name
-    page.username = request.form.get('username')
-    page.password = request.form.get('password')
+    page.username = str(request.form.get('username'))
+    page.password = str(request.form.get('password'))
     result_dict = page.login()
     if len(result_dict):
         if result_dict['password'] == page.password:
@@ -98,13 +100,13 @@ def update_form(page_name):
             "edit.html",
             page_title=page.title,
             title=page.title,
-            page_content=page.page_content,
+            page_content=page.page_content
         )
     else:
         return render_template(
             'edit.html',
             page_title='Edit Page',
-            title=page.title,
+            title=page.title
         )
 
 
@@ -123,6 +125,7 @@ def save(page_name):
         page_content=page.page_content,
         last_modified_date=page.last_modified_date,
         author_last_modified=page.author_last_modified)
+
 
 
 @app.route('/<page_name>/archives')

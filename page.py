@@ -1,4 +1,4 @@
-import mysql.connector
+import pg
 import dbconfig
 
 
@@ -8,18 +8,21 @@ class Page:
         if exists:
             query = "select page_content,last_modified_date,author_last_modified, id from page where title = '%s'" % self.title
             entry = Database.getAll(query)
-            self.page_content = entry[0]
-            self.last_modified_date = entry[1]
-            self.author_last_modified = entry[2]
+            for result in entry:
+                self.page_content = result.page_content
+                self.last_modified_date = result.last_modified_date
+                self.author_last_modified = result.author_last_modified
         return exists
 
     def login(self):
-        query = ("select username, password from login where username = '%s'" % self.username)
-        result_list = Database.getAll(query)
+        # sql = str('SELECT username, password FROM login WHERE username = self.username')
+        query= "select username,password from login where username = '%s'" % self.username
+        result_list=Database.getAll(query)
         login_dict = {}
         if result_list != None:
-            login_dict.update({'username': result_list[0]})
-            login_dict.update({'password': result_list[1]})
+            for result in result_list:
+                login_dict.update({'username': result.username})
+                login_dict.update({'password': result.password})
         return login_dict
 
     def save(self):
@@ -44,10 +47,15 @@ class Page:
             Database.doQuery(query)
             query = "select page_content,last_modified_date,author_last_modified,id from page where title = '%s'" % self.title
             entry = Database.getAll(query)
-            self.page_content = entry[0]
-            self.last_modified_date = entry[1]
-            self.author_last_modified = entry[2]
-            self.id = entry[3]
+            for result in entry:
+                self.page_content = result.page_content
+                self.last_modified_date = result.last_modified_date
+                self.author_last_modified = result.author_last_modified
+                self.id = result.id
+            # self.page_content = entry[0]
+            # self.last_modified_date = entry[1]
+            # self.author_last_modified = entry[2]
+            # self.id = entry[3]
             self.pageid = self.id
             query = "insert into pagehistory (title, page_content, author_last_modified, last_modified_date, pageid) values('%s', '%s', '%s',now(), %d)" % (
                 self.title, Database.escape(self.page_content), Database.escape(self.author_last_modified), self.pageid)
@@ -56,7 +64,7 @@ class Page:
     def update(self):
         exists = Database.checkTitles(self.title)
         if exists:
-            query = "select page_content from page where title = '%s'" % self.title
+            query = ("select page_content from page where title = '%s'") % (self.title)
             self.page_content = Database.getContent(query)
 
     @staticmethod
@@ -78,9 +86,10 @@ class Page:
         query = "select page_content,author_last_modified,last_modified_date from pagehistory where revisionid = '%d'" % int(
             revisionid)
         entry = Database.getAll(query)
-        archiveContent.update({'page_content': entry[0]})
-        archiveContent.update({'author_last_modified': entry[1]})
-        archiveContent.update({'last_modified_date': entry[2]})
+        for result in entry:
+            archiveContent.update({'page_content':result.page_content})
+            archiveContent.update({'last_modified_date':result.last_modified_date})
+            archiveContent.update({'author_last_modified':result.author_last_modified})
         return archiveContent
 
     # def __str__(self):
@@ -96,8 +105,8 @@ class Page:
 class Database(object):
     @staticmethod
     def getConnection():
-        return mysql.connector.connect(user=dbconfig.dbUser, password=dbconfig.dbPassword, host=dbconfig.dbHost,
-                                       database=dbconfig.dbName)
+        return pg.DB(user=dbconfig.dbUser, passwd=dbconfig.dbPassword, host=dbconfig.dbHost,
+                                       dbname=dbconfig.dbName)
 
     @staticmethod
     def escape(value):
@@ -105,57 +114,68 @@ class Database(object):
 
     @staticmethod
     def getAll(query):
-        conn = Database.getConnection()
-        cur = conn.cursor()
-        cur.execute(query)
-        entry = cur.fetchone()
-        cur.close()
-        conn.close()
+        db=Database.getConnection()
+        entry = db.query(query)
+        entry=entry.namedresult()
         return entry
 
     @staticmethod
     def getContent(query):
-        conn = Database.getConnection()
-        cur = conn.cursor()
-        cur.execute(query)
-        entry = cur.fetchone()
-        page_content = entry[0]
-        cur.close()
-        conn.close()
+        db=Database.getConnection()
+        entry=db.query(query)
+        entry=entry.getresult()
+        page_content=entry[0]
+        # conn = Database.getConnection()
+        # cur = conn.cursor()
+        # cur.execute(query)
+        # entry = cur.fetchone()
+        # page_content = entry[0]
+        # cur.close()
+        # conn.close()
         return page_content
 
     @staticmethod
     def getResult(query, getOne=False):
-        conn = Database.getConnection()
-        cur = conn.cursor()
-        cur.execute(query)
-        if getOne:
-            result_set = cur.fetchone()
-        else:
-            result_set = cur.fetchall()
-        cur.close()
-        conn.close()
+        db = Database.getConnection()
+        entry = db.query(query)
+        result_set=entry.getresult()
+        # if getOne:
+        #     result_set = cur.fetchone()
+        # else:
+        #     result_set = cur.fetchall()
+        # cur.close()
+        # conn.close()
         return result_set
 
     @staticmethod
     def checkTitles(title):
-        conn = Database.getConnection()
-        cur = conn.cursor()
-        sql = "SELECT COUNT(1) FROM page WHERE title = '%s'" % title
-        cur.execute(sql)
-        if cur.fetchone()[0]:
-            exists = True
+        db=Database.getConnection()
+        sql=db.query("SELECT id FROM page WHERE title = '%s'"% (title))
+        sel=sql.namedresult()
+        if sel:
+            exists=True
         else:
-            exists = False
-        cur.close()
-        conn.close()
+            exists=False
         return exists
+        # conn = Database.getConnection()
+        # cur = conn.cursor()
+        # sql = "SELECT COUNT(1) FROM page WHERE title = '%s'" % title
+        # cur.execute(sql)
+        # if cur.fetchone()[0]:
+        #     exists = True
+        # else:
+        #     exists = False
+        # cur.close()
+        # conn.close()
+        # return exists
 
     @staticmethod
     def doQuery(query):
-        conn = Database.getConnection()
-        cur = conn.cursor()
-        cur.execute(query)
-        conn.commit()
-        cur.close()
-        conn.close()
+        db=Database.getConnection()
+        db.query(query)
+        # conn = Database.getConnection()
+        # cur = conn.cursor()
+        # cur.execute(query)
+        # conn.commit()
+        # cur.close()
+        # conn.close()
