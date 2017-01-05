@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 
 """
 import os
-from flask import Flask, render_template, request, redirect, url_for,session,Markup
+from flask import Flask, render_template, request, redirect, url_for,session,Markup, send_from_directory
 from wiki_linkify import wiki_linkify
 from jinja2 import Environment, FileSystemLoader
 from page import *
@@ -27,6 +27,9 @@ DBNAME = os.environ.get('DBNAME', True)
 ###
 # Routing for my application.
 ###
+
+app.add_url_rule('/favicon.ico',
+                 redirect_to=url_for('static', filename='favicon.ico'))
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
