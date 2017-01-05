@@ -1,5 +1,5 @@
 import pg
-import dbconfig
+import app
 
 
 class Page:
@@ -15,7 +15,6 @@ class Page:
         return exists
 
     def login(self):
-        # sql = str('SELECT username, password FROM login WHERE username = self.username')
         query= "select username,password from login where username = '%s'" % self.username
         result_list=Database.getAll(query)
         login_dict = {}
@@ -52,10 +51,6 @@ class Page:
                 self.last_modified_date = result.last_modified_date
                 self.author_last_modified = result.author_last_modified
                 self.id = result.id
-            # self.page_content = entry[0]
-            # self.last_modified_date = entry[1]
-            # self.author_last_modified = entry[2]
-            # self.id = entry[3]
             self.pageid = self.id
             query = "insert into pagehistory (title, page_content, author_last_modified, last_modified_date, pageid) values('%s', '%s', '%s',now(), %d)" % (
                 self.title, Database.escape(self.page_content), Database.escape(self.author_last_modified), self.pageid)
@@ -105,8 +100,7 @@ class Page:
 class Database(object):
     @staticmethod
     def getConnection():
-        return pg.DB(user=dbconfig.dbUser, passwd=dbconfig.dbPassword, host=dbconfig.dbHost,
-                                       dbname=dbconfig.dbName)
+        return pg.DB(host=app.DBHOST, user=app.DBUSER, passwd=app.DBPASS, dbname=app.DBNAME)
 
     @staticmethod
     def escape(value):
@@ -125,13 +119,6 @@ class Database(object):
         entry=db.query(query)
         entry=entry.getresult()
         page_content=entry[0]
-        # conn = Database.getConnection()
-        # cur = conn.cursor()
-        # cur.execute(query)
-        # entry = cur.fetchone()
-        # page_content = entry[0]
-        # cur.close()
-        # conn.close()
         return page_content
 
     @staticmethod
@@ -139,12 +126,6 @@ class Database(object):
         db = Database.getConnection()
         entry = db.query(query)
         result_set=entry.getresult()
-        # if getOne:
-        #     result_set = cur.fetchone()
-        # else:
-        #     result_set = cur.fetchall()
-        # cur.close()
-        # conn.close()
         return result_set
 
     @staticmethod
@@ -157,25 +138,8 @@ class Database(object):
         else:
             exists=False
         return exists
-        # conn = Database.getConnection()
-        # cur = conn.cursor()
-        # sql = "SELECT COUNT(1) FROM page WHERE title = '%s'" % title
-        # cur.execute(sql)
-        # if cur.fetchone()[0]:
-        #     exists = True
-        # else:
-        #     exists = False
-        # cur.close()
-        # conn.close()
-        # return exists
 
     @staticmethod
     def doQuery(query):
         db=Database.getConnection()
         db.query(query)
-        # conn = Database.getConnection()
-        # cur = conn.cursor()
-        # cur.execute(query)
-        # conn.commit()
-        # cur.close()
-        # conn.close()

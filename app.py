@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect
 from wiki_linkify import wiki_linkify
 from jinja2 import Environment, FileSystemLoader
@@ -6,11 +7,44 @@ import markdown
 from flask import Markup
 from flask import Flask, session
 import sys
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = Flask('mywiki')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
 
+DBUSER = os.environ.get('DBUSER', True)
+DBPASS = os.environ.get('DBPASS', True)
+DBHOST = os.environ.get('DBHOST', True)
+DBNAME = os.environ.get('DBNAME', True)
+
+###
+# Routing for my application.
+###
+
+@app.route('/<file_name>.txt')
+def send_text_file(file_name):
+    """Send your static text file."""
+    file_dot_text = file_name + '.txt'
+    return app.send_static_file(file_dot_text)
+
+
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=600'
+    return response
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    """Custom 404 page."""
+    return render_template('404.html'), 404
 
 @app.route("/")
 def home():
@@ -127,7 +161,6 @@ def save(page_name):
         author_last_modified=page.author_last_modified)
 
 
-
 @app.route('/<page_name>/archives')
 def archives(page_name):
     list = Page.getArchives(page_name)
@@ -151,16 +184,9 @@ def archiveView(page_name, revisionid):
     )
 
 
-# conn = Database.getConnection()
-# cur = conn.cursor()
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['wiki_linkify'] = wiki_linkify
 view = env.get_template('view.html')
-# cur.close()
-# conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
-# cur.close()
-#
-# conn.close()

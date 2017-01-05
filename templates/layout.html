@@ -2,26 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="http://127.0.0.1:5000/static/style.css">
 </head>
 <body>
 {% block nav %}
-<div class="nav">
-    <nav class="navbar navbar-default .navbar-static-top container-fluid">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Wiki</a>
+    <div class="nav">
+        <nav class="navbar navbar-default .navbar-static-top container-fluid">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Wiki</a>
+                </div>
+                <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
             </div>
-            <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
-        </div>
-    </nav>
-</div>
+        </nav>
+    </div>
 {% endblock %}
 {% block body %}
-<h1>My Wiki</h1>
+    <h1>My Wiki</h1>
 {% endblock %}
 </body>
 </html>
