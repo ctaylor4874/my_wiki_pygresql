@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 
 """
 import os
-from flask import Flask, render_template, request, redirect, url_for,session,Markup, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for,session,Markup
 from wiki_linkify import wiki_linkify
 from jinja2 import Environment, FileSystemLoader
 from page import *
@@ -133,16 +133,17 @@ def update_form(page_name):
     page.title = page_name
     page.page_content = request.form.get('page_content')
     page.update()
+    # page_content = M(markdown.markdown(page_content))
     if page.page_content:
-        return render_template(
-            "edit.html",
+        page_content=page.page_content[0]
+        wiki_linkify(page_content)
+        return edit.render(
             page_title=page.title,
             title=page.title,
-            page_content=page.page_content
+            page_content=page_content
         )
     else:
-        return render_template(
-            'edit.html',
+        return edit.render(
             page_title='Edit Page',
             title=page.title
         )
@@ -191,6 +192,7 @@ def archiveView(page_name, revisionid):
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['wiki_linkify'] = wiki_linkify
 view = env.get_template('view.html')
+edit = env.get_template('edit.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

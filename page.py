@@ -119,6 +119,7 @@ class Database(object):
         entry=db.query(query)
         entry=entry.getresult()
         page_content=entry[0]
+        print type(page_content)
         return page_content
 
     @staticmethod
