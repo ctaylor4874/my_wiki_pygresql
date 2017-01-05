@@ -27,10 +27,6 @@ DBNAME = os.environ.get('DBNAME', True)
 ###
 # Routing for my application.
 ###
-
-app.add_url_rule('/favicon.ico',
-                 redirect_to=url_for('static', filename='favicon.ico'))
-
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
     """Send your static text file."""
