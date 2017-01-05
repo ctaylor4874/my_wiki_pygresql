@@ -1,11 +1,15 @@
+"""
+Flask Documentation:     http://flask.pocoo.org/docs/
+Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
+Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
+
+"""
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,session,Markup
 from wiki_linkify import wiki_linkify
 from jinja2 import Environment, FileSystemLoader
 from page import *
 import markdown
-from flask import Markup
-from flask import Flask, session
 import sys
 
 reload(sys)
