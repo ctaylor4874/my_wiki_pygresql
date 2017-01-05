@@ -32,10 +32,11 @@ class Page:
             Database.doQuery(query)
             query = "select page_content,last_modified_date,author_last_modified, id from page where title = '%s'" % self.title
             entry = Database.getAll(query)
-            self.page_content = entry[0]
-            self.last_modified_date = entry[1]
-            self.author_last_modified = entry[2]
-            self.id = entry[3]
+            for result in entry:
+                self.page_content = result.page_content
+                self.last_modified_date = result.last_modified_date
+                self.author_last_modified = result.author_last_modified
+                self.id = result.id
             self.pageid = self.id
             query = "insert into pagehistory (title, page_content, author_last_modified, last_modified_date, pageid) values('%s', '%s', '%s',now(), %d)" % (
                 self.title, Database.escape(self.page_content), Database.escape(self.author_last_modified), self.pageid)
