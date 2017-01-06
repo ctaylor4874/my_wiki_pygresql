@@ -66,13 +66,15 @@ class Page:
     @staticmethod
     def getArchives(page_name):
         query = "SELECT id FROM page WHERE title = '%s'" % (page_name)
-        id = Database.getResult(query)
+        id = Database.getDict(query)
         pageid = id[0]
         query = "SELECT last_modified_date, revisionid FROM pagehistory WHERE pageid = %d" % (pageid)
         archives = {}
-        list = Database.getResult(query)
+        list = Database.getAll(query)
         for item in list:
-            archives.update({item[0]: item[1]})
+            archives.update({item.last_modified_date: item.revisionid})
+            #todo fix archives view
+        print archives
         return archives
 
     @staticmethod
@@ -120,9 +122,13 @@ class Database(object):
         entry=db.query(query)
         entry=entry.getresult()
         page_content=entry[0]
-        print type(page_content)
         return page_content
-
+    @staticmethod
+    def getDict(query):
+        db = Database.getConnection()
+        entry = db.query(query)
+        result_set = entry.dictresult()
+        return result_set
     @staticmethod
     def getResult(query, getOne=False):
         db = Database.getConnection()
