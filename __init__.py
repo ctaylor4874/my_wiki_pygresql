@@ -184,10 +184,10 @@ def archiveView(page_name, revisionid):
     )
 
 
-# env = Environment(loader=FileSystemLoader('templates'))
-# env.filters['wiki_linkify'] = wiki_linkify
-# view = env.get_template('templates/view.html')
-# edit = env.get_template('templates/edit.html')
+env = Environment(loader=FileSystemLoader('templates'))
+env.filters['wiki_linkify'] = wiki_linkify
+view = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/view.html')
+edit = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/edit.html')
 
 if __name__ == "__main__":
     app.run()
