@@ -192,8 +192,8 @@ def archiveView(page_name, revisionid):
 
 env = Environment(loader=FileSystemLoader('templates'))
 env.filters['wiki_linkify'] = wiki_linkify
-view = env.get_template('view.html')
-edit = env.get_template('edit.html')
+view = env.get_template('templates/view.html')
+edit = env.get_template('templates/edit.html')
 
 if __name__ == "__main__":
     app.run()
