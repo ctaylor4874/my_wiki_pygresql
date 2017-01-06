@@ -15,7 +15,7 @@ class Page:
         return exists
 
     def login(self):
-        query = "select username,password from login here username = '%s'" % self.username
+        query = "select username, password from login here username = '%s'" % self.username
         result_list = Database.getAll(query)
         login_dict = {}
         if result_list != None:
