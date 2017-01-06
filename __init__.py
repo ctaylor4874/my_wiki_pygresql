@@ -31,7 +31,7 @@ DBNAME = os.environ.get('DBNAME', True)
 def send_text_file(file_name):
     """Send your static text file."""
     file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
+    return app.send_static_file(file_dot_text)\
 
 
 @app.after_request
@@ -190,10 +190,10 @@ def archiveView(page_name, revisionid):
     )
 
 
-env = Environment(loader=FileSystemLoader('templates'))
-env.filters['wiki_linkify'] = wiki_linkify
-view = env.get_template('view.html')
-edit = env.get_template('edit.html')
+# env = Environment(loader=FileSystemLoader('templates'))
+# env.filters['wiki_linkify'] = wiki_linkify
+# view = env.get_template('view.html')
+# edit = env.get_template('edit.html')
 
 if __name__ == "__main__":
     app.run()
