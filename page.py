@@ -15,8 +15,8 @@ class Page:
         return exists
 
     def login(self):
-        query= "select username,password from login where username = '%s'" % self.username
-        result_list=Database.getAll(query)
+        query = "select username,password from login where username = '%s'" % self.username
+        result_list = Database.getAll(query)
         login_dict = {}
         if result_list != None:
             for result in result_list:
@@ -66,14 +66,19 @@ class Page:
     @staticmethod
     def getArchives(page_name):
         query = "SELECT id FROM page WHERE title = '%s'" % (page_name)
-        id = Database.getDict(query)
+        id = Database.getResult(query)
         pageid = id[0]
         query = "SELECT last_modified_date, revisionid FROM pagehistory WHERE pageid = %d" % (pageid)
         archives = {}
-        list = Database.getAll(query)
+        list = Database.getResult(query)
+        print type(list[0][0])
+        print list
         for item in list:
-            archives.update({item.last_modified_date: item.revisionid})
-            #todo fix archives view
+            # archives.update({item.last_modified_date: item.revisionid})
+            # print type(item.last_modified_date)
+            archives.update({item[0][0]: item[0][1]})
+
+        # #todo fix archives view
         print archives
         return archives
 
@@ -85,9 +90,9 @@ class Page:
             revisionid)
         entry = Database.getAll(query)
         for result in entry:
-            archiveContent.update({'page_content':result.page_content})
-            archiveContent.update({'last_modified_date':result.last_modified_date})
-            archiveContent.update({'author_last_modified':result.author_last_modified})
+            archiveContent.update({'page_content': result.page_content})
+            archiveContent.update({'last_modified_date': result.last_modified_date})
+            archiveContent.update({'author_last_modified': result.author_last_modified})
         return archiveContent
 
     # def __str__(self):
@@ -111,43 +116,45 @@ class Database(object):
 
     @staticmethod
     def getAll(query):
-        db=Database.getConnection()
+        db = Database.getConnection()
         entry = db.query(query)
-        entry=entry.namedresult()
+        entry = entry.namedresult()
         return entry
 
     @staticmethod
     def getContent(query):
-        db=Database.getConnection()
-        entry=db.query(query)
-        entry=entry.getresult()
-        page_content=entry[0]
+        db = Database.getConnection()
+        entry = db.query(query)
+        entry = entry.getresult()
+        page_content = entry[0]
         return page_content
+
     @staticmethod
     def getDict(query):
         db = Database.getConnection()
         entry = db.query(query)
         result_set = entry.dictresult()
         return result_set
+
     @staticmethod
     def getResult(query, getOne=False):
         db = Database.getConnection()
         entry = db.query(query)
-        result_set=entry.getresult()
+        result_set = entry.getresult()
         return result_set
 
     @staticmethod
     def checkTitles(title):
-        db=Database.getConnection()
-        sql=db.query("SELECT id FROM page WHERE title = '%s'"% (title))
-        sel=sql.namedresult()
+        db = Database.getConnection()
+        sql = db.query("SELECT id FROM page WHERE title = '%s'" % (title))
+        sel = sql.namedresult()
         if sel:
-            exists=True
+            exists = True
         else:
-            exists=False
+            exists = False
         return exists
 
     @staticmethod
     def doQuery(query):
-        db=Database.getConnection()
+        db = Database.getConnection()
         db.query(query)
