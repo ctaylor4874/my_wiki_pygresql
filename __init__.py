@@ -18,12 +18,6 @@ sys.setdefaultencoding('utf8')
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
 
-# DBUSER = os.environ.get('DBUSER', True)
-# DBPASS = os.environ.get('DBPASS', True)
-# DBHOST = os.environ.get('DBHOST', True)
-# DBNAME = os.environ.get('DBNAME', True)
-
-
 ###
 # Routing for my application.
 ###
@@ -190,10 +184,10 @@ def archiveView(page_name, revisionid):
     )
 
 
-env = Environment(loader=FileSystemLoader('templates'))
-env.filters['wiki_linkify'] = wiki_linkify
-view = env.get_template('templates/view.html')
-edit = env.get_template('templates/edit.html')
+# env = Environment(loader=FileSystemLoader('templates'))
+# env.filters['wiki_linkify'] = wiki_linkify
+# view = env.get_template('templates/view.html')
+# edit = env.get_template('templates/edit.html')
 
 if __name__ == "__main__":
     app.run()
