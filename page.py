@@ -76,7 +76,7 @@ class Page:
         for item in list:
             # archives.update({item.last_modified_date: item.revisionid})
             # print type(item.last_modified_date)
-            archives.update({item[0][0]: item[0][1]})
+            archives.update({str(item[0][0]): item[0][1]})
 
         # #todo fix archives view
         print archives
