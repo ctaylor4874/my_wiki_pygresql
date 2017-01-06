@@ -18,10 +18,10 @@ sys.setdefaultencoding('utf8')
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
 
-DBUSER = os.environ.get('DBUSER', True)
-DBPASS = os.environ.get('DBPASS', True)
-DBHOST = os.environ.get('DBHOST', True)
-DBNAME = os.environ.get('DBNAME', True)
+# DBUSER = os.environ.get('DBUSER', True)
+# DBPASS = os.environ.get('DBPASS', True)
+# DBHOST = os.environ.get('DBHOST', True)
+# DBNAME = os.environ.get('DBNAME', True)
 
 
 ###

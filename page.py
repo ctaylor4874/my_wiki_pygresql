@@ -1,5 +1,5 @@
 import pg
-import __init__
+import dbconfig
 
 
 class Page:
@@ -108,7 +108,7 @@ class Page:
 class Database(object):
     @staticmethod
     def getConnection():
-        return pg.DB(host=__init__.DBHOST, user=__init__.DBUSER, passwd=__init__.DBPASS, dbname=__init__.DBNAME)
+        return pg.DB(host=dbconfig.DBHOST, user=dbconfig.DBUSER, passwd=dbconfig.DBPASS, dbname=dbconfig.DBNAME)
 
     @staticmethod
     def escape(value):
