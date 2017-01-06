@@ -6,8 +6,8 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 """
 import os
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
-from wiki_linkify import wiki_linkify
-from jinja2 import Environment, FileSystemLoader
+# from wiki_linkify import wiki_linkify
+# from jinja2 import Environment, FileSystemLoader
 from page import *
 import markdown
 import sys
@@ -67,7 +67,8 @@ def placeholder(page_name):
     exists = page.placeHolder()
     if exists:
         page.page_content = Markup(markdown.markdown(page.page_content))
-        return view.render(
+        return render_template(
+            "view.html",
             page_title=page.title,
             title=page.title,
             page_content=page.page_content,
@@ -131,14 +132,16 @@ def update_form(page_name):
     # page_content = M(markdown.markdown(page_content))
     if page.page_content:
         page_content = page.page_content[0]
-        wiki_linkify(page_content)
-        return edit.render(
+        # wiki_linkify(page_content)
+        return render_template(
+            "edit.html",
             page_title=page.title,
             title=page.title,
             page_content=page_content
         )
     else:
-        return edit.render(
+        return render_template(
+            "edit.html",
             page_title='Edit Page',
             title=page.title
         )
@@ -154,7 +157,8 @@ def save(page_name):
     page.pageid = page.id
     page.save()
     page.page_content = Markup(markdown.markdown(page.page_content))
-    return view.render(
+    return render_template(
+        "view.html",
         title=page.title,
         page_content=page.page_content,
         last_modified_date=page.last_modified_date,
@@ -176,7 +180,8 @@ def archiveView(page_name, revisionid):
     author_last_modified = archiveContent.get('author_last_modified', None)
     last_modified_date = archiveContent.get('last_modified_date', None)
     page_content = Markup(markdown.markdown(page_content))
-    return view.render(
+    return render_template(
+        "view.html",
         title=title,
         page_content=page_content,
         author_last_modified=author_last_modified,
@@ -184,10 +189,10 @@ def archiveView(page_name, revisionid):
     )
 
 
-env = Environment(loader=FileSystemLoader('templates'))
-env.filters['wiki_linkify'] = wiki_linkify
-view = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/view.html')
-edit = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/edit.html')
+# env = Environment(loader=FileSystemLoader('templates'))
+# env.filters['wiki_linkify'] = wiki_linkify
+# view = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/view.html')
+# edit = env.get_template('/var/www/my_wiki_pygresql/my_wiki_pygresql/templates/edit.html')
 
 if __name__ == "__main__":
     app.run()

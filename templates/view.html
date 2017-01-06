@@ -20,12 +20,12 @@
 {% endblock %}
 {% block body %}
     <div id="content">
-            {{wiki_linkify | safe}}
-            <p>{{page_content | wiki_linkify}}</p>
-            <p>Page modified on {{last_modified_date}} by {{author_last_modified}}</p>
+{#            {{wiki_linkify | safe}}#}
+{#            <p>{{page_content | wiki_linkify}}</p>#}
+{#            <p>Page modified on {{last_modified_date}} by {{author_last_modified}}</p>#}
 
-{#        <p>{{ page_content }}</p>#}
-{#        <p>Page modified on {{ last_modified_date }} by {{ author_last_modified }}</p>#}
+        <p>{{ page_content }}</p>
+        <p>Page modified on {{ last_modified_date }} by {{ author_last_modified }}</p>
     </div>
     <!--<a href="/{{title}}/edit">Edit This Page    </a>-->
     <!--<a href="/{{title}}/archives">View Archives</a>-->
