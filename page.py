@@ -1,5 +1,5 @@
 import pg
-import dbconfig
+import config
 
 
 class Page:
@@ -15,7 +15,7 @@ class Page:
         return exists
 
     def login(self):
-        query = "select username,password from login where username = '%s'" % self.username
+        query = "select username,password from login here username = '%s'" % self.username
         result_list = Database.getAll(query)
         login_dict = {}
         if result_list != None:
@@ -108,7 +108,7 @@ class Page:
 class Database(object):
     @staticmethod
     def getConnection():
-        return pg.DB(host=dbconfig.DBHOST, user=dbconfig.DBUSER, passwd=dbconfig.DBPASS, dbname=dbconfig.DBNAME)
+        return pg.DB(host=config.DBHOST, user=config.DBUSER, passwd=config.DBPASS, dbname=config.DBNAME)
 
     @staticmethod
     def escape(value):

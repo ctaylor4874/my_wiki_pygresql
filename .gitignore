@@ -97,4 +97,4 @@ Temporary Items
 .apdisk
 
 .idea/
-dbconfig.py
+config.py
