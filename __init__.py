@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 
 """
 import os
-from flask import Flask, render_template, request, redirect, url_for,session,Markup
+from flask import Flask, render_template, request, redirect, url_for, session, Markup
 from wiki_linkify import wiki_linkify
 from jinja2 import Environment, FileSystemLoader
 from page import *
@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 __init__ = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
 
 DBUSER = os.environ.get('DBUSER', True)
 DBPASS = os.environ.get('DBPASS', True)
@@ -49,6 +49,7 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
 
 @app.route("/")
 def home():
@@ -124,7 +125,7 @@ def login(page_name):
         )
 
 
-app.secret_key = 'hello there'
+app.secret_key = 'secretkey'
 
 
 @app.route('/<page_name>/edit')
@@ -135,7 +136,7 @@ def update_form(page_name):
     page.update()
     # page_content = M(markdown.markdown(page_content))
     if page.page_content:
-        page_content=page.page_content[0]
+        page_content = page.page_content[0]
         wiki_linkify(page_content)
         return edit.render(
             page_title=page.title,
