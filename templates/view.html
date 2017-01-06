@@ -1,29 +1,32 @@
 {% extends "layout.html" %}
 {% block nav %}
-<div class="nav">
-    <nav class="navbar navbar-default .navbar-static-top container-fluid">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Wiki</a>
-            </div>
-            <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
+    <div class="nav">
+        <nav class="navbar navbar-default .navbar-static-top container-fluid">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Wiki</a>
+                </div>
+                <button type="button" class="btn btn-default navbar-btn navbar-right"><a href="/">Home</a></button>
 
-            <ul class="nav nav-tabs navbar-left">
-                <li role="presentation" class="active"><a href="#">{{title}}</a></li>
-                <li role="presentation"><a href="/{{title}}/archives">View Page History</a></li>
-                <li role="presentation"><a href="/{{title}}/login_page">Edit This Page</a></li>
-                <li role="tab"><a href="/logout">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-</div>
+                <ul class="nav nav-tabs navbar-left">
+                    <li role="presentation" class="active"><a href="#">{{ title }}</a></li>
+                    <li role="presentation"><a href="/{{ title }}/archives">View Page History</a></li>
+                    <li role="presentation"><a href="/{{ title }}/login_page">Edit This Page</a></li>
+                    <li role="tab"><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 {% endblock %}
 {% block body %}
-<div id="content">
-    {{wiki_linkify | safe}}
-    <p>{{page_content | wiki_linkify}}</p>
-    <p>Page modified on {{last_modified_date}} by {{author_last_modified}}</p>
-</div>
-<!--<a href="/{{title}}/edit">Edit This Page    </a>-->
-<!--<a href="/{{title}}/archives">View Archives</a>-->
+    <div id="content">
+        {#    {{wiki_linkify | safe}}#}
+        {#    <p>{{page_content | wiki_linkify}}</p>#}
+        {#    <p>Page modified on {{last_modified_date}} by {{author_last_modified}}</p>#}
+
+        <p>{{ page_content }}</p>
+        <p>Page modified on {{ last_modified_date }} by {{ author_last_modified }}</p>
+    </div>
+    <!--<a href="/{{title}}/edit">Edit This Page    </a>-->
+    <!--<a href="/{{title}}/archives">View Archives</a>-->
 {% endblock %}
