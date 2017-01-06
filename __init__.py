@@ -15,7 +15,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-app = Flask(__name__)
+__init__ = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
 
 DBUSER = os.environ.get('DBUSER', True)
@@ -31,7 +31,7 @@ DBNAME = os.environ.get('DBNAME', True)
 def send_text_file(file_name):
     """Send your static text file."""
     file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
+    return __init__.send_static_file(file_dot_text)
 
 
 @app.after_request
@@ -195,4 +195,4 @@ view = env.get_template('view.html')
 edit = env.get_template('edit.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
